@@ -1,0 +1,1 @@
+# mkdocs-open-in-new-tab
