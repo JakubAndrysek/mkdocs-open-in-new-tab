@@ -21,7 +21,7 @@ Look at the [demo](https://newtab.kubaandrysek.cz/).
 Install the plugin using pip from [PyPI](https://pypi.org/project/mkdocs-open-in-new-tab/):
 
 ```bash
-pip3 install mkdocs-open-in-new-tab
+pip install mkdocs-open-in-new-tab
 ```
 
 ## Usage
