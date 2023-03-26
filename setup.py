@@ -4,14 +4,11 @@ def readme():
     with open('README.md') as f:
         return f.read()
 
-def requirements():
-    with open('requirements.txt') as f:
-        return f.read().splitlines()
 
 # https://pypi.org/project/mkdocs-open-in-new-tab/
 setup(
     name='mkdocs-open-in-new-tab',
-    version='1.0.0',
+    version='1.0.1',
     description='MkDocs plugin to open outgoing links and PDFs in new tab.',
     long_description=readme(),
     long_description_content_type='text/markdown',
@@ -21,7 +18,7 @@ setup(
     author_email='email@kubaandrysek.cz',
     license='MIT',
     python_requires='>=3.6',
-    install_requires=requirements(),
+    install_requires=['mkdocs'],
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.6',
