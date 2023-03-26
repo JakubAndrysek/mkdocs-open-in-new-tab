@@ -25,9 +25,9 @@ plugins:
 Link to [Google](https://google.com) and [GitHub](https://github.com).
 Both should links should open in a new tab.
 
-Relative link to [Relative link](./docs/RelativeLink.md) should open in the same tab.
+Relative link to [Relative link](./RelativeLink.md) should open in the same tab.
 
-Sample PDF link to [PDF](./docs/assets/sample.pdf) should open in a new tab (pdf from [here](https://www.africau.edu/images/default/sample.pdf)).
+Sample PDF link to [PDF](./assets/sample.pdf) should open in a new tab (pdf from [here](https://www.africau.edu/images/default/sample.pdf)).
 
 ## License
 
