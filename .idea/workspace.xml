@@ -2,24 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f192e16d-e29a-44f9-8d9e-77455962a9b6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RelativeLink.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/RelativeLink.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/assets/sample.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open_in_new_tab/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open_in_new_tab/js/open_in_new_tab.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/open_in_new_tab/plugin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +70,7 @@
       <option name="presentableId" value="Default" />
       <updated>1679863072533</updated>
       <workItem from="1679863074113" duration="45000" />
-      <workItem from="1679863123055" duration="3297000" />
+      <workItem from="1679863123055" duration="4564000" />
     </task>
     <servers />
   </component>

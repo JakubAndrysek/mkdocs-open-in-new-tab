@@ -37,9 +37,9 @@ extra:
       link: https://twitter.com/KubaAndrysek
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/jakub-andrysek/
-#    analytics:
-#        provider: google
-#        property: G-XXXXXXXXXX
+   analytics:
+       provider: google
+       property: G-FC199H98G7
 
 use_directory_urls: True
 
