@@ -1,5 +1,5 @@
 site_name: MkDocs - Open in new tab plugin
-site_url: https://jakubandrysek.github.io/mkdocs-open-in-new-tab/
+site_url: https://newtab.kubaandrysek.cz/
 site_author: Jakub Andrýsek
 site_description: >-
   MkDocs plugin to open outgoing links and PDFs in new tab.
