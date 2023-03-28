@@ -37,9 +37,23 @@ extra:
       link: https://twitter.com/KubaAndrysek
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/jakub-andrysek/
-   analytics:
-       provider: google
-       property: G-FC199H98G7
+  analytics:
+    provider: google
+    property: G-FC199H98G7
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback!
+
 
 use_directory_urls: True
 
