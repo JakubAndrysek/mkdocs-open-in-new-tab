@@ -7,6 +7,7 @@ site_description: >-
 # Repository
 repo_name: JakubAndrysek/mkdocs-open-in-new-tab
 repo_url: https://github.com/JakubAndrysek/mkdocs-open-in-new-tab
+edit_uri: edit/main/docs/
 
 # Copyright
 copyright: Copyright © 2023 Jakub Andrýsek
@@ -20,14 +21,33 @@ theme:
     - navigation.tabs
     - navigation.indexes
     - navigation.top
-
+    - content.action.edit
+    - content.action.view
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.expand
   icon:
     repo: fontawesome/brands/github
 
+
   palette:
-    - scheme: slate
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: red
       accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
 
 extra:
   social:
@@ -65,8 +85,10 @@ plugins:
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
-
-
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
 
 nav:
   - Home: 'README.md'

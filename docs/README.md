@@ -12,7 +12,9 @@
 
 </p>
 
-This plugin adds js to open outgoing links and PDFs in a new tab.
+This plugin adds JS code to open outgoing links and PDFs in a new tab.
+
+The automatic opening of links in a new tab is a common feature of modern websites. It is also a good practice for accessibility. However, it is not a default behavior of Markdown. This plugin adds a JavaScript code to your website that opens external links and PDFs in a new tab.
 
 Look at the [demo](https://newtab.kubaandrysek.cz/).
 
@@ -42,6 +44,61 @@ Both should links should open in a new tab.
 Relative link to [Relative link](./RelativeLink.md) should open in the same tab.
 
 Sample PDF link to [PDF](./assets/sample.pdf) should open in a new tab (pdf from [here](https://www.africau.edu/images/default/sample.pdf)).
+
+
+# How does it work?
+The plugin adds a JavaScript code to your website that opens external links and PDFs in a new tab. Injection of the code is done using the `on_page_context` hook. The code is injected into the `<head>` section of the page as a `<script>` dependency of the `open_in_new_tab.js` file. The code is automatically added to all pages of your website.
+
+
+The function `external_new_window` checks if the link is external using the `hostname` property of the `a` element. If the link is external, the `target` attribute is set to `_blank` and the `rel` attribute is set to `noopener`. The `noopener` attribute is used to prevent the new tab from accessing the `window.opener` property and ensures that the original page will not be able to access the new tab.
+
+The same way is used to open PDF links in a new tab.
+
+
+
+<details><summary>Show source code</summary>
+<p>
+
+Look at this source <a href="https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/blob/main/open_in_new_tab/js/open_in_new_tab.js">open_in_new_tab.js</a>:
+
+```js
+// Description: Open external links in a new tab and PDF links in a new tab
+// Source: https://jekyllcodex.org/without-plugin/new-window-fix/
+
+//open external links in a new window
+function external_new_window() {
+    for(var c = document.getElementsByTagName("a"), a = 0;a < c.length;a++) {
+        var b = c[a];
+        if(b.getAttribute("href") && b.hostname !== location.hostname) {
+            b.target = "_blank";
+            b.rel = "noopener";
+        }
+    }
+}
+//open PDF links in a new window
+function pdf_new_window ()
+{
+    if (!document.getElementsByTagName) return false;
+    var links = document.getElementsByTagName("a");
+    for (var eleLink=0; eleLink < links.length; eleLink ++) {
+    if ((links[eleLink].href.indexOf('.pdf') !== -1)||(links[eleLink].href.indexOf('.doc') !== -1)||(links[eleLink].href.indexOf('.docx') !== -1)) {
+        links[eleLink].onclick =
+        function() {
+            window.open(this.href);
+            return false;
+        }
+    }
+    }
+}
+
+window.addEventListener("DOMContentLoaded", function() {
+    external_new_window();
+    pdf_new_window();
+});
+```
+</p>
+</details>
+
 
 ## License
 
