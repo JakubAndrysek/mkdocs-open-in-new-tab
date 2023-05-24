@@ -99,6 +99,8 @@ window.addEventListener("DOMContentLoaded", function() {
 </p>
 </details>
 
+## Known issues
+This extension does not work with mkdocs-material [navigation.instant](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-loading). JS could not be loaded when the page is loaded instantly. If you know how to fix it, please let me know. Issue is [here](https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/issues/2).
 
 ## License
 
