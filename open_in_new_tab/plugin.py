@@ -6,12 +6,12 @@
 # PyPI: https://pypi.org/project/mkdocs-open-in-new-tab/
 # Inspired by: https://github.com/timvink/mkdocs-charts-plugin/tree/main
 
-import open_in_new_tab
 from mkdocs.plugins import BasePlugin
 from mkdocs.utils import copy_file
 import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
 
 class OpenInNewTabPlugin(BasePlugin):
     def on_config(self, config, **kwargs):
@@ -22,8 +22,6 @@ class OpenInNewTabPlugin(BasePlugin):
         # Add pointer to open_in_new_tab.js file to extra_javascript
         # which is added to the output directory during on_post_build() event
         config["extra_javascript"].append("js/open_in_new_tab.js")
-
-
 
     def on_post_build(self, config):
         """

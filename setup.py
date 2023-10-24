@@ -8,7 +8,7 @@ def readme():
 # https://pypi.org/project/mkdocs-open-in-new-tab/
 setup(
     name='mkdocs-open-in-new-tab',
-    version='1.0.2',
+    version='1.0.3',
     description='MkDocs plugin to open outgoing links and PDFs in new tab.',
     long_description=readme(),
     long_description_content_type='text/markdown',
