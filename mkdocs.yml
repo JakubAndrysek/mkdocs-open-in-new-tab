@@ -26,6 +26,7 @@ theme:
     - navigation.tracking
     - navigation.tabs
     - navigation.expand
+    # - navigation.instant for testing purposes
   icon:
     repo: fontawesome/brands/github
 
