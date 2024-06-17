@@ -1,5 +1,1 @@
 mkdocs
-mkdocs-material
-mkdocs-glightbox
-mkdocs-git-revision-date-localized-plugin
-mkdocs-open-in-new-tab

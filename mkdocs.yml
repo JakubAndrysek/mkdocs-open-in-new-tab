@@ -24,12 +24,10 @@ theme:
     - content.action.edit
     - content.action.view
     - navigation.tracking
-    - navigation.tabs
     - navigation.expand
     # - navigation.instant for testing purposes
   icon:
     repo: fontawesome/brands/github
-
 
   palette:
     # Palette toggle for dark mode
@@ -75,21 +73,18 @@ extra:
           note: >-
             Thanks for your feedback!
 
-
 use_directory_urls: True
 
 plugins:
   - search
   - open-in-new-tab
 
-
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
   - attr_list
 
 nav:
-  - Home: 'README.md'
+  - Home: "README.md"

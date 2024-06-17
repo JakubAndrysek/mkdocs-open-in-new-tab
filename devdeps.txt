@@ -1,0 +1,6 @@
+mkdocs==1.6.0
+mkdocs-material==9.5.27
+mkdocs-glightbox==0.4.0
+mkdocs-git-revision-date-localized-plugin==1.2.6
+mkdocs-open-in-new-tab==1.0.3
+setuptools==70.0.0
