@@ -2,3 +2,5 @@ mkdocs-material~=9.5.27
 mkdocs-glightbox~=0.4.0
 mkdocs-git-revision-date-localized-plugin~=1.2.6
 setuptools~=70.0.0
+build~=1.2.2
+twine~=5.1.1
