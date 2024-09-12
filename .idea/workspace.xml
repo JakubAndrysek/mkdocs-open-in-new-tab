@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f192e16d-e29a-44f9-8d9e-77455962a9b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/devdeps.txt" beforeDir="false" afterPath="$PROJECT_DIR$/devdeps.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,10 +18,10 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2NZEBvCTLtrWDr8GLcPuBJDRY8W" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -94,7 +94,8 @@
       <workItem from="1679863074113" duration="45000" />
       <workItem from="1679863123055" duration="4564000" />
       <workItem from="1688131084288" duration="6131000" />
-      <workItem from="1718663973567" duration="3971000" />
+      <workItem from="1718663973567" duration="8217000" />
+      <workItem from="1718788856739" duration="17000" />
     </task>
     <servers />
   </component>

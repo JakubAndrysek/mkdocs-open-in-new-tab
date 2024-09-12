@@ -21,7 +21,7 @@ def import_dev_requirements():
 # https://pypi.org/project/mkdocs-open-in-new-tab/
 setup(
     name="mkdocs-open-in-new-tab",
-    version="1.0.4",
+    version="1.0.5",
     description="MkDocs plugin to open outgoing links and PDFs in new tab.",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -42,6 +42,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
     ],
     packages=find_packages(),
