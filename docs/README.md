@@ -15,6 +15,8 @@ This plugin adds JS code to open outgoing links and PDFs in a new tab.
 The automatic opening of links in a new tab is a common feature of modern websites. It is also a good practice for accessibility. However, it is not a default behavior of Markdown. This plugin adds a JavaScript code to your website that opens external links and PDFs in a new tab.
 
 Look at the [demo](https://newtab.kubaandrysek.cz/).
+aasLook at the [demo](http://127.0.0.1:8000/).
+aasLook at the [demo](http://127.0.0.1:1234/).
 
 ## Installation
 
@@ -61,33 +63,37 @@ Look at this source <a href="https://github.com/JakubAndrysek/mkdocs-open-in-new
 
 ```js
 // Description: Open external links in a new tab and PDF links in a new tab
-// Source: https://jekyllcodex.org/without-plugin/new-window-fix/
+// Based on: https://jekyllcodex.org/without-plugin/new-window-fix/
 
-//open external links in a new window
+// Open external links in a new window
 function external_new_window() {
-    for(let c = document.getElementsByTagName("a"), a = 0;a < c.length;a++) {
+    for(let c = document.getElementsByTagName("a"), a = 0; a < c.length; a++) {
         let b = c[a];
-        if(b.getAttribute("href") && b.hostname !== location.hostname) {
+        if(b.getAttribute("href") && b.host !== location.host) {
             b.target = "_blank";
             b.rel = "noopener";
         }
     }
 }
-//open PDF links in a new window
-function pdf_new_window ()
-{
+
+// Open PDF links in a new window
+function pdf_new_window() {
     if (!document.getElementsByTagName) {
-      return false;
+        return false;
     }
+
+    const extensions = ['.pdf', '.doc', '.docx', '.json', '.xls', '.xlsx', '.ppt', '.pptx', '.zip', '.rar', '.tar', '.gz', '.7z', '.bz2', '.xz', '.tgz', '.tar.gz'];
     let links = document.getElementsByTagName("a");
-    for (let eleLink=0; eleLink < links.length; eleLink ++) {
-    if ((links[eleLink].href.indexOf('.pdf') !== -1)||(links[eleLink].href.indexOf('.doc') !== -1)||(links[eleLink].href.indexOf('.docx') !== -1)) {
-        links[eleLink].onclick =
-        function() {
-            window.open(this.href);
-            return false;
+
+    for (let eleLink = 0; eleLink < links.length; eleLink++) {
+        let href = links[eleLink].href.toLowerCase(); // Convert href to lowercase for case-insensitive matching
+
+        if (extensions.some(ext => href.endsWith(ext))) {
+            links[eleLink].onclick = function() {
+                window.open(this.href);
+                return false;
+            }
         }
-    }
     }
 }
 
@@ -97,15 +103,17 @@ function apply_rules() {
 }
 
 if (typeof document$ !== "undefined") {
-    // compatibility with mkdocs-material's instant loading feature
-    // based on code from https://github.com/timvink/mkdocs-charts-plugin
-    // Copyright (c) 2021 Tim Vink - MIT License
-    // fixes [Issue #2](https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/issues/2)
+    // Compatibility with mkdocs-material's instant loading feature
     document$.subscribe(function() {
         apply_rules();
-        console.log("Applying rules");
-    })
+    });
+} else {
+    // For browsers without mkdocs-material's instant loading feature
+    document.addEventListener("DOMContentLoaded", function() {
+        apply_rules();
+    });
 }
+
 ```
 </p>
 </details>

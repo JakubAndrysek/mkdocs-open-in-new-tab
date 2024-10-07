@@ -21,7 +21,7 @@ class OpenInNewTabPlugin(BasePlugin):
         """
         # Add pointer to open_in_new_tab.js file to extra_javascript
         # which is added to the output directory during on_post_build() event
-        config["extra_javascript"].append("js/open_in_new_tab.js")
+        config["extra_javascript"].append("/js/open_in_new_tab.js")
 
     def on_post_build(self, config):
         """
