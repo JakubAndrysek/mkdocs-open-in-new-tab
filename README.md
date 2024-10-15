@@ -34,6 +34,12 @@ plugins:
   - open-in-new-tab
 ```
 
+Create the `js` folder if it does not exist in your project's root folder:
+
+```shell
+mkdir docs/js
+touch docs/js/.keep
+```
 
 ## Testing
 Link to [Google](https://google.com) and [GitHub](https://github.com).
