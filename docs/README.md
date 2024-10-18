@@ -15,8 +15,6 @@ This plugin adds JS code to open outgoing links and PDFs in a new tab.
 The automatic opening of links in a new tab is a common feature of modern websites. It is also a good practice for accessibility. However, it is not a default behavior of Markdown. This plugin adds a JavaScript code to your website that opens external links and PDFs in a new tab.
 
 Look at the [demo](https://newtab.kubaandrysek.cz/).
-aasLook at the [demo](http://127.0.0.1:8000/).
-aasLook at the [demo](http://127.0.0.1:1234/).
 
 ## Installation
 
@@ -35,6 +33,14 @@ plugins:
   - search
   - open-in-new-tab
 ```
+
+## Configuration
+
+The plugin supports the following configuration option:
+
+
+- `add_icon:` (default: false)
+    - If set to true, the plugin will add an icon next to external links.
 
 
 ## Testing
@@ -115,8 +121,31 @@ if (typeof document$ !== "undefined") {
 }
 
 ```
+
+`open_in_new_tab.css` (added when add_icon: true)
+
+```css
+/*
+ * Materialize links that open in a new window with a right-up arrow icon
+ * Author: @ebouchut (https://github.com/ebouchut)
+ * https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/issues/4
+ */
+ a[target="_blank"]::after {
+    content: "↗";
+    display: inline-block;
+    margin-left: 0.2em;
+    width: 1em;
+    height: 1em;
+}
+```
+
 </p>
 </details>
+
+
+
+
+
 
 <!-- ## Known issues
 This extension does not work with mkdocs-material [navigation.instant](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-loading). JS could not be loaded when the page is loaded instantly. If you know how to fix it, please let me know. Issue is [here](https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/issues/2). -->

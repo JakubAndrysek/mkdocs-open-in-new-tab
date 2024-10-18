@@ -10,7 +10,7 @@ repo_url: https://github.com/JakubAndrysek/mkdocs-open-in-new-tab
 edit_uri: edit/main/docs/
 
 # Copyright
-copyright: Copyright © 2023 Jakub Andrýsek
+copyright: Copyright © Jakub Andrýsek
 
 theme:
   name: material
@@ -77,7 +77,8 @@ use_directory_urls: True
 
 plugins:
   - search
-  - open-in-new-tab
+  - open-in-new-tab:
+      add_icon: true
 
 markdown_extensions:
   - pymdownx.highlight
