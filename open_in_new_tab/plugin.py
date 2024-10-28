@@ -7,6 +7,7 @@
 # Inspired by: https://github.com/timvink/mkdocs-charts-plugin/tree/main
 
 from pathlib import Path
+
 from mkdocs.config.base import Config
 from mkdocs.config.config_options import Type
 from mkdocs.plugins import BasePlugin
@@ -24,7 +25,9 @@ class OpenInNewTabPlugin(BasePlugin[OpenInNewTabPluginConfig]):
         See https://www.mkdocs.org/user-guide/plugins/#on_config.
         """
         # Add pointer to open_in_new_tab.js file to extra_javascript
-        config["extra_javascript"].append("js/open_in_new_tab.js")
+        config["extra_javascript"] = ["js/open_in_new_tab.js"] + config[
+            "extra_javascript"
+        ]
 
         # If add_icon is True, add extra CSS to extra_css
         if self.config.add_icon:
