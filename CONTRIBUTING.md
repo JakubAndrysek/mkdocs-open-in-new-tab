@@ -19,11 +19,18 @@ resolved development dependencies. `requirements.txt` and `devdeps.txt` remain
 convenience entry points for pip. `pip install -e '.[dev]'` also works.
 Use `uv lock` after intentional dependency changes and commit the updated lockfile.
 
-`make install` installs the built wheel with `python3 -m pip`. To select a
-specific interpreter, use `make install PYTHON=/path/to/python`. It does not
-require an activated virtual environment; normal pip environment restrictions
-still apply. Runtime dependencies must already be installed (`--no-deps`).
-Use `pip install .` when dependencies should be resolved as well.
+The Makefile provides shortcuts for common tasks:
+
+- `make test`: runs both `uv run --locked --extra dev pytest -q` and
+  `node --test tests/test_links.cjs` (requires Node.js 20+).
+- `make docs-serve` / `make docs-build`: prepares documentation copies, then
+  runs `uv run --locked --extra dev mkdocs serve` or `mkdocs build --clean --strict`.
+- `make package`: runs `uv build` and
+  `uv run --locked --extra dev twine check dist/*` after removing old artifacts.
+- `make clean`: removes build artifacts.
+
+For development setup use `uv sync --locked --extra dev`; to install the package
+with its runtime dependencies use `python -m pip install .`.
 
 CI tests Python 3.8–3.15. Dependency versions may differ by Python version, as
 recorded in the lockfile. For example, old Python versions use an older build

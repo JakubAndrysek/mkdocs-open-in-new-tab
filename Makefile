@@ -1,17 +1,9 @@
-PYTHON ?= python3
-
-.PHONY: package install install-dev release release-test clean test docs-serve docs-build fixRelativeLinkDocs
+.PHONY: package release release-test clean test docs-serve docs-build fixRelativeLinkDocs
 
 package:
 	rm -rf dist
 	uv build
 	uv run --locked --extra dev twine check dist/*
-
-install: package
-	$(PYTHON) -m pip install --no-deps --force-reinstall dist/*.whl
-
-install-dev:
-	uv sync --locked --extra dev
 
 # Publishing remains manual until a separate release workflow is approved.
 release: package
@@ -25,6 +17,7 @@ clean:
 
 test:
 	uv run --locked --extra dev pytest -q
+	node --test tests/test_links.cjs
 
 fixRelativeLinkDocs:
 	sed 's/\.\/docs\//\.\//g' README.md > docs/README.md
