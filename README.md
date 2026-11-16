@@ -18,6 +18,8 @@ Look at the [demo](https://newtab.kubaandrysek.cz/).
 
 ## Installation
 
+Requires Python 3.8+ and MkDocs 1.4+.
+
 Install the plugin using pip from [PyPI](https://pypi.org/project/mkdocs-open-in-new-tab/):
 
 ```bash
@@ -145,3 +147,7 @@ if (typeof document$ !== "undefined") {
 ## License
 
 This project is licensed under the terms of the MIT license.
+
+## Development
+
+See [CONTRIBUTING.md](https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/blob/main/CONTRIBUTING.md) for uv setup, tests, packaging and manual releases.
