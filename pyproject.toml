@@ -1,0 +1,54 @@
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14"]
+build-backend = "uv_build"
+
+[project]
+name = "mkdocs-open-in-new-tab"
+version = "1.0.8"
+description = "MkDocs plugin to open outgoing links and PDFs in new tab."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Jakub Andrýsek", email = "email@kubaandrysek.cz" }]
+keywords = ["mkdocs", "plugin", "open in new tab", "links"]
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Operating System :: OS Independent",
+]
+dependencies = ["mkdocs>=1.4"]
+
+[project.urls]
+Homepage = "https://github.com/JakubAndrysek/mkdocs-open-in-new-tab"
+Documentation = "https://newtab.kubaandrysek.cz/"
+Issues = "https://github.com/JakubAndrysek/mkdocs-open-in-new-tab/issues"
+
+[project.entry-points."mkdocs.plugins"]
+open-in-new-tab = "open_in_new_tab.plugin:OpenInNewTabPlugin"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<10",
+    "pip>=24,<26",
+    "build>=1.2.2,<2; python_version < '3.10'",
+    "build>=1.6.1,<2; python_version >= '3.10'",
+    "twine>=5.1,<7",
+    "mkdocs-material>=9.5.27,<10",
+    "mkdocs-glightbox>=0.4,<1",
+    "mkdocs-git-revision-date-localized-plugin>=1.2.6,<2",
+]
+
+[tool.uv.build-backend]
+module-name = "open_in_new_tab"
+module-root = ""
+source-include = ["tests/**"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

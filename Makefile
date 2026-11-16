@@ -1,41 +1,30 @@
-.PHONY: package install install-dev release release-test clean reviewCode docs-serve docs-build fixRelativeLinkDocs
+.PHONY: package release release-test clean test docs-serve docs-build fixRelativeLinkDocs
 
-# Packaging
 package:
-	rm -f dist/*
-	python3 -m build --wheel  # Updated to use python3 build tool for wheel
-	python3 setup.py sdist
+	rm -rf dist
+	uv build
+	uv run --locked --extra dev twine check dist/*
 
-install: package
-	python3 -m pip install --no-deps --force dist/*.whl
-
-install-dev: package
-	python3 -m pip install --force --editable .
-
-# Releasing
+# Publishing remains manual until a separate release workflow is approved.
 release: package
-	twine upload --repository pypi dist/*
+	uv run --locked --extra dev twine upload --repository pypi dist/*
 
 release-test: package
-	twine upload --repository testpypi dist/*
+	uv run --locked --extra dev twine upload --repository testpypi dist/*
 
-# Clean build directories
 clean:
 	rm -rf dist build *.egg-info
 
-# Fix relative links in documentation
+test:
+	uv run --locked --extra dev pytest -q
+	node --test tests/test_links.cjs
+
 fixRelativeLinkDocs:
-	# change ./docs/ to ./
-	sed  's/\.\/docs\//\.\//g' README.md > docs/README.md
+	sed 's/\.\/docs\//\.\//g' README.md > docs/README.md
 	cp RelativeLink.md docs/RelativeLink.md
 
-# Code review
-reviewCode:
-	sourcery review mkdoxy --in-place
-
-# Documentation
 docs-serve: fixRelativeLinkDocs
-	mkdocs serve
+	uv run --locked --extra dev mkdocs serve
 
 docs-build: fixRelativeLinkDocs
-	mkdocs build
+	uv run --locked --extra dev mkdocs build --clean --strict

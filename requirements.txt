@@ -1,1 +1,2 @@
-mkdocs
+# Compatibility entry point; project dependencies live in pyproject.toml.
+.
