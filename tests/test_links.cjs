@@ -45,3 +45,33 @@ for (const mode of ['dom', 'material', 'instant', 'both']) {
     assert.equal(links[0].target, '_blank');
   });
 }
+
+test('host exclusions match exactly and preserve the separate document rule', () => {
+  const hosts = ['excluded.example', 'localhost:8001', 'quote"host', 'back\\slash', '\u2028'];
+  const script = source.replace('const exclude_hosts = [];',
+    `const exclude_hosts = ${JSON.stringify(hosts)};`);
+  function link(href) {
+    const url = new URL(href);
+    return {href: url.href, host: url.host, getAttribute: () => href};
+  }
+  const links = [link('https://excluded.example/'), link('http://localhost:8001/'),
+    link('http://localhost:8002/'), link('https://sub.excluded.example/'),
+    link('https://excluded.example/FILE.PDF'), link('https://normal.example/')];
+  links[0].target = '_self';
+  links[0].rel = 'nofollow';
+  let callback;
+  const opened = [];
+  vm.runInNewContext(script, {
+    document: {getElementsByTagName: () => links,
+      addEventListener: (_, cb) => {callback = cb;}},
+    location: {host: 'docs.example'}, window: {open: href => opened.push(href)}
+  });
+  callback();
+  assert.equal(links[0].target, '_self');
+  assert.equal(links[0].rel, 'nofollow');
+  assert.equal(links[1].target, undefined);
+  for (const index of [2, 3, 5]) assert.equal(links[index].target, '_blank');
+  assert.equal(links[4].target, undefined);
+  assert.equal(links[4].onclick(), false);
+  assert.deepEqual(opened, [links[4].href]);
+});
