@@ -45,11 +45,83 @@ in the sdist, but excluded from the wheel.
 
 ## Releases
 
-Publishing remains manual: `make release-test` uploads to TestPyPI and
-`make release` uploads to PyPI using your locally configured credentials.
-Neither CI nor publishing documentation uploads a Python package.
+Publishing uses PyPI Trusted Publishing (OIDC); no upload token is stored in GitHub.
+The owner prepares the version in a PR, tests it on TestPyPI, then creates the
+GitHub Release and approves the production upload. The workflow supports stable
+`X.Y.Z` versions only and rejects prereleases. Nothing is published on an ordinary
+push or PR. Build validation runs on PRs that change the publishing workflow.
 
-Before a release, update the version in `pyproject.toml`, regenerate the lockfile,
-run tests and review artifacts. Create a matching version tag and GitHub Release.
-Automated Trusted Publishing will be handled separately; this migration keeps the
-existing version 1.0.8 and does not publish it again.
+### One-time setup
+
+The repository environments have been configured as follows; preserve these
+settings when changing publishing configuration. Use `testpypi` and `pypi`, each with `JakubAndrysek` as the
+only required reviewer. Allow self-review (the owner initiates the release),
+disable administrator bypass, and restrict `testpypi` to branch `main` and `pypi`
+to tags `v*`.
+
+Configure a GitHub Trusted Publisher in **both** PyPI and TestPyPI. These are
+separate accounts/services; configure each independently:
+
+| Field | Value |
+| --- | --- |
+| Owner | `JakubAndrysek` |
+| Repository | `mkdocs-open-in-new-tab` |
+| Workflow filename | `publish.yaml` |
+| Environment | `pypi` on PyPI; `testpypi` on TestPyPI |
+
+On PyPI, use the existing project's Publishing settings. On TestPyPI, use a
+pending publisher if the project does not yet exist. Enable account 2FA and keep
+recovery codes safe. See the [PyPI setup guide](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
+
+### Prepare and test a version
+
+1. Update `project.version` in `pyproject.toml` to an unused version, run `uv lock`,
+   and add release notes to `CHANGELOG.md`. The current 1.0.8 is already on PyPI;
+   it must not be published again. Merge the version PR after all CI checks pass.
+2. Open Actions → **Build and publish release** → **Run workflow** on `main`.
+   Manual runs publish only to TestPyPI. Every dispatch runs independently; pending
+   dispatches do not replace one another. Duplicate uploads fail rather than overwrite
+   files; avoid dispatching the same version twice. Approve the `testpypi` environment after
+   the build succeeds and inspect the resulting package.
+3. Test installation in a fresh environment. Install runtime dependencies from
+   PyPI first, then install the exact test package from TestPyPI without resolving
+   dependencies there (replace `X.Y.Z`):
+
+   ```sh
+   uv venv /tmp/newtab-release-check
+   uv pip install --python /tmp/newtab-release-check/bin/python 'mkdocs>=1.4'
+   uv pip install --python /tmp/newtab-release-check/bin/python --no-deps \
+     --index-url https://test.pypi.org/simple/ 'mkdocs-open-in-new-tab==X.Y.Z'
+   ```
+
+   Build a small MkDocs site with the plugin, including `add_icon` and
+   `exclude_hosts`. Each service forbids reusing an uploaded filename: if the
+   package needs changes, choose a new version and repeat. A TestPyPI run does
+   not automatically promote its artifact; production rebuilds and verifies the
+   release commit. Production requires a successful manual TestPyPI workflow with a successful
+   `publish-test` job for exactly the same commit on `main`, initiated by the owner.
+   A skipped or failed upload does not qualify. Keep that commit identical to the
+   tested commit; the production guard checks the GitHub Actions history.
+
+### Publish on PyPI
+
+1. As `JakubAndrysek`, create a GitHub Release with tag `vX.Y.Z` at the exact
+   tested commit on `main`, using the changelog as release notes. Publishing the
+   release starts the workflow. A draft does not publish a package.
+2. The build validates the tag against metadata, checks that the commit belongs
+   to `main`, rejects versions already on PyPI, and requires the matching successful
+   TestPyPI upload. It then runs tests and docs and builds/checks wheel and sdist.
+   Test uploads reject versions already present on either PyPI or TestPyPI. Network
+   failures stop validation; only an HTTP 404 means a version is available. Artifacts are
+   available on the workflow run for 14 days.
+3. Review the build and approve the `pypi` environment. A separate job downloads
+   and publishes those artifacts with OIDC and attestations; it does not check
+   out code or rebuild the package. Only the publishing job has `id-token: write`.
+4. Verify the version on PyPI and installation from a fresh environment, then
+   close release-dependent issues such as #15.
+
+The workflow accepts production releases only from `JakubAndrysek`. The required
+environment approval is the final publishing gate. If the build fails, fix the
+problem through a PR and use a new version/tag as needed. If upload fails before
+any files reach PyPI, fix the configuration and rerun the failed job. For a partial
+upload, inspect PyPI before retrying; existing files cannot be overwritten.
