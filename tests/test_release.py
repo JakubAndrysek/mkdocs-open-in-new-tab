@@ -44,3 +44,53 @@ def test_release_commit_must_belong_to_main(guard, tmp_path):
     git("commit", "--allow-empty", "-m", "unreviewed")
     with pytest.raises(subprocess.CalledProcessError):
         guard.validate_commit(tmp_path)
+
+
+@pytest.mark.parametrize("index", ["https://pypi.org", "https://test.pypi.org"])
+def test_existing_version_rejected(guard, monkeypatch, index):
+    from contextlib import nullcontext
+    monkeypatch.setattr(guard, "urlopen", lambda url, timeout: nullcontext())
+    with pytest.raises(ValueError, match="already exists"):
+        guard.require_unused_version("1.0.8", index)
+
+
+@pytest.mark.parametrize("status", [404, 403, 500])
+def test_only_not_found_means_available(guard, monkeypatch, status):
+    def response(url, timeout):
+        raise guard.HTTPError(url, status, "error", {}, None)
+    monkeypatch.setattr(guard, "urlopen", response)
+    if status == 404:
+        guard.require_unused_version("1.0.9")
+    else:
+        with pytest.raises(guard.HTTPError):
+            guard.require_unused_version("1.0.9")
+
+
+def test_network_errors_fail_closed(guard, monkeypatch):
+    def response(url, timeout):
+        raise TimeoutError()
+    monkeypatch.setattr(guard, "urlopen", response)
+    with pytest.raises(TimeoutError):
+        guard.require_unused_version("1.0.9")
+
+
+@pytest.mark.parametrize("runs,jobs,accepted", [("", "", False), ("123", "", False), ("123", "456", True)])
+def test_requires_successful_test_upload(guard, monkeypatch, runs, jobs, accepted):
+    calls = []
+    sha = "a" * 40
+    def output(command, text):
+        calls.append(command)
+        if "/workflows/" in command[3]:
+            assert "head_sha=" + sha in command[3]
+            assert 'select(.head_sha == "' + sha + '"' in command[5]
+            assert '.actor.login == "JakubAndrysek"' in command[5]
+            return runs
+        assert 'select(.name == "publish-test" and .conclusion == "success")' in command[5]
+        return jobs
+    monkeypatch.setattr(guard.subprocess, "check_output", output)
+    if accepted:
+        guard.require_testpypi_run(sha)
+    else:
+        with pytest.raises(ValueError, match="No successful TestPyPI upload"):
+            guard.require_testpypi_run(sha)
+    assert all("--paginate" in call for call in calls)

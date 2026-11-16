@@ -79,7 +79,9 @@ recovery codes safe. See the [PyPI setup guide](https://docs.pypi.org/trusted-pu
    and add release notes to `CHANGELOG.md`. The current 1.0.8 is already on PyPI;
    it must not be published again. Merge the version PR after all CI checks pass.
 2. Open Actions → **Build and publish release** → **Run workflow** on `main`.
-   Manual runs publish only to TestPyPI. Approve the `testpypi` environment after
+   Manual runs publish only to TestPyPI. Every dispatch runs independently; pending
+   dispatches do not replace one another. Duplicate uploads fail rather than overwrite
+   files; avoid dispatching the same version twice. Approve the `testpypi` environment after
    the build succeeds and inspect the resulting package.
 3. Test installation in a fresh environment. Install runtime dependencies from
    PyPI first, then install the exact test package from TestPyPI without resolving
@@ -96,7 +98,10 @@ recovery codes safe. See the [PyPI setup guide](https://docs.pypi.org/trusted-pu
    `exclude_hosts`. Each service forbids reusing an uploaded filename: if the
    package needs changes, choose a new version and repeat. A TestPyPI run does
    not automatically promote its artifact; production rebuilds and verifies the
-   release commit. Keep that commit identical to the tested commit.
+   release commit. Production requires a successful manual TestPyPI workflow with a successful
+   `publish-test` job for exactly the same commit on `main`, initiated by the owner.
+   A skipped or failed upload does not qualify. Keep that commit identical to the
+   tested commit; the production guard checks the GitHub Actions history.
 
 ### Publish on PyPI
 
@@ -104,7 +109,10 @@ recovery codes safe. See the [PyPI setup guide](https://docs.pypi.org/trusted-pu
    tested commit on `main`, using the changelog as release notes. Publishing the
    release starts the workflow. A draft does not publish a package.
 2. The build validates the tag against metadata, checks that the commit belongs
-   to `main`, runs tests and docs, and builds/checks wheel and sdist. Artifacts are
+   to `main`, rejects versions already on PyPI, and requires the matching successful
+   TestPyPI upload. It then runs tests and docs and builds/checks wheel and sdist.
+   Test uploads reject versions already present on either PyPI or TestPyPI. Network
+   failures stop validation; only an HTTP 404 means a version is available. Artifacts are
    available on the workflow run for 14 days.
 3. Review the build and approve the `pypi` environment. A separate job downloads
    and publishes those artifacts with OIDC and attestations; it does not check

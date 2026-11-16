@@ -10,9 +10,6 @@ on:
       - 'tests/test_release.py'
 permissions:
   contents: read
-concurrency:
-  group: publish-${{ github.event.release.tag_name || github.ref }}
-  cancel-in-progress: false
 jobs:
   build:
     # PRs exercise the build without granting publishing credentials.
@@ -37,6 +34,7 @@ jobs:
         if: github.event_name == 'release'
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ github.token }}
         run: uv run --no-project python scripts/check_release.py "$RELEASE_TAG"
       - name: Validate TestPyPI commit and version
         if: github.event_name == 'workflow_dispatch'
