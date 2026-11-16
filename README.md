@@ -36,6 +36,14 @@ plugins:
   - open-in-new-tab
 ```
 
+## Instant navigation
+
+The plugin supports Material for MkDocs instant navigation and InstantClick.
+When using InstantClick, load the plugin script after the InstantClick library
+and before calling `InstantClick.init()`, so the page-change handler is registered
+before initialization. If both navigation integrations are present, the Material
+handler takes precedence.
+
 ## Configuration
 
 The plugin supports the following configuration option:

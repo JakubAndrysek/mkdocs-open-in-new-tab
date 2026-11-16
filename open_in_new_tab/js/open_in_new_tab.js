@@ -43,6 +43,11 @@ if (typeof document$ !== "undefined") {
     document$.subscribe(function() {
         apply_rules();
     });
+} else if (typeof InstantClick !== "undefined") {
+    // Compatibility with InstantClick.js
+    InstantClick.on('change', function() {
+        apply_rules();
+    });
 } else {
     // For browsers without mkdocs-material's instant loading feature
     document.addEventListener("DOMContentLoaded", function() {

@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../open_in_new_tab/js/open_in_new_tab.js'), 'utf8');
 
-for (const mode of ['dom', 'material']) {
+for (const mode of ['dom', 'material', 'instant', 'both']) {
   test(`${mode}: external hosts, ports, documents and repeated navigation`, () => {
     function link(href) {
       const url = new URL(href, 'https://docs.example:8000/');
@@ -21,7 +21,16 @@ for (const mode of ['dom', 'material']) {
       }},
       location: {host: 'docs.example:8000'}, window: {open: href => opened.push(href)}
     };
-    if (mode === 'material') context.document$ = {subscribe: cb => {callback = cb;}};
+    if (mode === 'instant' || mode === 'both') {
+      context.InstantClick = {on: (event, cb) => {
+        assert.equal(event, 'change');
+        assert.equal(mode, 'instant', 'Material takes precedence when both hooks exist');
+        callback = cb;
+      }};
+    }
+    if (mode === 'material' || mode === 'both') {
+      context.document$ = {subscribe: cb => {callback = cb;}};
+    }
     vm.runInNewContext(source, context);
     callback();
     assert.equal(links[0].target, undefined);
