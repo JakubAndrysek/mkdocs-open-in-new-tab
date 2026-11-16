@@ -50,6 +50,21 @@ The plugin supports the following configuration option:
 
 - `add_icon:` (default: false)
     - If set to true, the plugin will add an icon next to external links.
+- `exclude_hosts` (list, default: empty)
+    - Listed hosts are skipped by the external-link rule. Use lowercase host names
+      without a scheme or path, such as `example.com` or `localhost:8001`.
+    - Matching is exact against the browser's `host` (including non-default ports).
+      Subdomains and wildcard patterns are not matched automatically.
+    - The separate document rule still opens PDF and other supported file links
+      in a new window, even on an excluded host. Existing link targets are preserved.
+
+```yaml
+plugins:
+  - open-in-new-tab:
+      exclude_hosts:
+        - example.com
+        - localhost:8001
+```
 
 
 ## Testing

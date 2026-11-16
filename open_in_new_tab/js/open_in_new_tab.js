@@ -3,9 +3,12 @@
 
 // Open external links in a new window
 function external_new_window() {
+
+    const exclude_hosts = [];
+
     for(let c = document.getElementsByTagName("a"), a = 0; a < c.length; a++) {
         let b = c[a];
-        if(b.getAttribute("href") && b.host !== location.host) {
+        if(b.getAttribute("href") && b.host !== location.host && !exclude_hosts.includes(b.host)) {
             b.target = "_blank";
             b.rel = "noopener";
         }
