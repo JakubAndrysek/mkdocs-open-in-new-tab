@@ -1,22 +1,23 @@
 name: Build and deploy docs to GitHub Pages
 on:
   push:
-    branches:
-      - master
-      - main
+    branches: [main]
 permissions:
-  contents: write
+  contents: read
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
         with:
-          python-version: 3.x
-      - uses: actions/cache@v2
-        with:
-          key: ${{ github.ref }}
-          path: .cache
-      - run: pip install -e ".[dev]"
-      - run: mkdocs gh-deploy --force
+          version: '0.13.8'
+          python-version: '3.14'
+      - run: uv sync --locked --extra dev
+      - run: make fixRelativeLinkDocs
+      - run: uv run --locked --extra dev mkdocs gh-deploy --force
