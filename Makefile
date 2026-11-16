@@ -1,16 +1,9 @@
-.PHONY: package release release-test clean test docs-serve docs-build fixRelativeLinkDocs
+.PHONY: package clean test docs-serve docs-build fixRelativeLinkDocs
 
 package:
 	rm -rf dist
 	uv build
 	uv run --locked --extra dev twine check dist/*
-
-# Publishing remains manual until a separate release workflow is approved.
-release: package
-	uv run --locked --extra dev twine upload --repository pypi dist/*
-
-release-test: package
-	uv run --locked --extra dev twine upload --repository testpypi dist/*
 
 clean:
 	rm -rf dist build *.egg-info

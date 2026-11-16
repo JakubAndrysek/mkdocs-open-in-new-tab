@@ -1,0 +1,87 @@
+name: Build and publish release
+on:
+  release:
+    types: [published]
+  workflow_dispatch: # TestPyPI only; select the main branch.
+  pull_request:
+    paths:
+      - '.github/workflows/publish.yaml'
+      - 'scripts/check_release.py'
+      - 'tests/test_release.py'
+permissions:
+  contents: read
+concurrency:
+  group: publish-${{ github.event.release.tag_name || github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    # PRs exercise the build without granting publishing credentials.
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' &&
+       github.repository == 'JakubAndrysek/mkdocs-open-in-new-tab' && github.actor == 'JakubAndrysek') ||
+      (github.repository == 'JakubAndrysek/mkdocs-open-in-new-tab' &&
+       github.event.release.author.login == 'JakubAndrysek' &&
+       github.actor == 'JakubAndrysek' && !github.event.release.prerelease)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.13.8'
+          python-version: '3.14'
+      - name: Validate release tag and commit
+        if: github.event_name == 'release'
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: uv run --no-project python scripts/check_release.py "$RELEASE_TAG"
+      - name: Validate TestPyPI commit and version
+        if: github.event_name == 'workflow_dispatch'
+        run: uv run --no-project python scripts/check_release.py --test
+      - run: uv sync --locked --extra dev
+      - run: make test
+      - run: make docs-build
+      - run: make package
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: python-distributions
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+  publish:
+    if: github.event_name == 'release'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mkdocs-open-in-new-tab
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: python-distributions
+          path: dist/
+      - name: Publish verified distributions
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # release/v1
+  publish-test:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/mkdocs-open-in-new-tab
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: python-distributions
+          path: dist/
+      - name: Publish verified distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/

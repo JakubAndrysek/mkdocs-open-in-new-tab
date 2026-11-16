@@ -1,7 +1,7 @@
 # MkDocs - Open in a new tab plugin
 
 <p align="center">
-<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FJakubAndrysek%2Fmkdocs-open-in-new-tab&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=true"/></a>
+<a href="https://hit.kubaandrysek.cz/?url=https%3A%2F%2Fgithub.com%2FJakubAndrysek%2Fmkdocs-open-in-new-tab&chart=true"><img src="https://hit.kubaandrysek.cz/?url=https%3A%2F%2Fgithub.com%2FJakubAndrysek%2Fmkdocs-open-in-new-tab"/></a>
 <img src="https://img.shields.io/github/license/JakubAndrysek/mkdocs-open-in-new-tab?style=flat-square">
 <img src="https://img.shields.io/github/v/release/JakubAndrysek/mkdocs-open-in-new-tab?style=flat-square">
 <img src="https://img.shields.io/github/stars/JakubAndrysek/mkdocs-open-in-new-tab?style=flat-square">

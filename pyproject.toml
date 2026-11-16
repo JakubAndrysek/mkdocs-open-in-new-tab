@@ -48,7 +48,7 @@ dev = [
 [tool.uv.build-backend]
 module-name = "open_in_new_tab"
 module-root = ""
-source-include = ["tests/**"]
+source-include = ["tests/**", "scripts/check_release.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
