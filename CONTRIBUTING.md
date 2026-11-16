@@ -19,6 +19,12 @@ resolved development dependencies. `requirements.txt` and `devdeps.txt` remain
 convenience entry points for pip. `pip install -e '.[dev]'` also works.
 Use `uv lock` after intentional dependency changes and commit the updated lockfile.
 
+`make install` installs the built wheel with `python3 -m pip`. To select a
+specific interpreter, use `make install PYTHON=/path/to/python`. It does not
+require an activated virtual environment; normal pip environment restrictions
+still apply. Runtime dependencies must already be installed (`--no-deps`).
+Use `pip install .` when dependencies should be resolved as well.
+
 CI tests Python 3.8–3.15. Dependency versions may differ by Python version, as
 recorded in the lockfile. For example, old Python versions use an older build
 frontend. CI also builds the documentation and validates distribution metadata.

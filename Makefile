@@ -1,3 +1,5 @@
+PYTHON ?= python3
+
 .PHONY: package install install-dev release release-test clean test docs-serve docs-build fixRelativeLinkDocs
 
 package:
@@ -6,7 +8,7 @@ package:
 	uv run --locked --extra dev twine check dist/*
 
 install: package
-	uv pip install --reinstall dist/*.whl
+	$(PYTHON) -m pip install --no-deps --force-reinstall dist/*.whl
 
 install-dev:
 	uv sync --locked --extra dev
